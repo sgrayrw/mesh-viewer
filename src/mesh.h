@@ -5,40 +5,53 @@
 #include "AGLM.h"
 
 namespace agl {
-   class Mesh
-   {
-   public:
+    class Mesh {
+    private:
+        int _numVertices;
+        int _numFaces;
+        float* _positions;
+        float* _normals;
+        unsigned int* _indices;
 
-      Mesh();
+        float _minx = FLT_MAX;
+        float _miny = FLT_MAX;
+        float _minz = FLT_MAX;
+        float _maxx = -FLT_MAX;
+        float _maxy = -FLT_MAX;
+        float _maxz = -FLT_MAX;
 
-      virtual ~Mesh();
+        void cleanup();
+    public:
 
-      // Initialize this object with the given file
-      // Returns true if successfull. false otherwise.
-      bool loadPLY(const std::string& filename);
+        Mesh();
 
-      // Return the minimum point of the axis-aligned bounding box
-      glm::vec3 getMinBounds() const;
+        virtual ~Mesh();
 
-      // Return the maximum point of the axis-aligned bounding box
-      glm::vec3 getMaxBounds() const;
+        // Initialize this object with the given file
+        // Returns true if successfull. false otherwise.
+        bool loadPLY(const std::string &filename);
 
-      // Return number of vertices in this model
-      int numVertices() const;
+        // Return the minimum point of the axis-aligned bounding box
+        glm::vec3 getMinBounds() const;
 
-      // Positions in this model
-      float* positions() const;
+        // Return the maximum point of the axis-aligned bounding box
+        glm::vec3 getMaxBounds() const;
 
-      // Normals in this model
-      float* normals() const;
+        // Return number of vertices in this model
+        int numVertices() const;
 
-      // Return number of faces in this model
-      int numTriangles() const;
+        // Positions in this model
+        float *positions() const;
 
-      // face indices in this model
-      unsigned int* indices() const;
+        // Normals in this model
+        float *normals() const;
 
-   };
+        // Return number of faces in this model
+        int numTriangles() const;
+
+        // face indices in this model
+        unsigned int *indices() const;
+    };
 }
 
 #endif

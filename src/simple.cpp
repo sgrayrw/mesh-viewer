@@ -62,13 +62,17 @@ static void cursor_position_callback(GLFWwindow *window, double xpos, double ypo
         float ydiff = ypos - starty;
 
         if (shift_down) {
-            float delta_d = ydiff / 20;
-            dist = start_dist - delta_d;
+            dist = start_dist - ydiff / 20 - xdiff / 20;
         } else {
-            float delta_azimuth = xdiff / 20;
+            float delta_azimuth = xdiff / 30;
             azimuth = start_azimuth - delta_azimuth;
-            float delta_elevation = ydiff / 20;
+            float delta_elevation = ydiff / 30;
             elevation = start_elevation + delta_elevation;
+
+            // clamp to -pi/2 to pi/2
+            float eps = 1e-5;
+            elevation = glm::max(elevation, (float) -M_PI_2 + eps);
+            elevation = glm::min(elevation, (float) M_PI_2 - eps);
         }
     }
 }
@@ -151,8 +155,8 @@ int main(int argc, char **argv) {
     const float normals[] =
     {
             0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f,
-            0.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 0.0f,
+            0.0f, 1.0f, 0.0f,
             0.0f, 0.0f, 1.0f
     };
 
@@ -225,10 +229,10 @@ int main(int argc, char **argv) {
 
     glUseProgram(shaderId);
 
+    // mvp
     GLuint mvpParam = glGetUniformLocation(shaderId, "mvp");
     glm::mat4 transform(1.0); // initialize to identity
     glm::mat4 projection = glm::perspective(glm::radians(60.0), 1.0, 0.1, 10.0);
-    //glm::mat4 projection = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -2.0f, 2.0f);
 
     // Loop until the user closes the window
     while (!glfwWindowShouldClose(window)) {

@@ -98,3 +98,5 @@ target_link_libraries(mesh-viewer ${CORE})
 add_executable(mesh-demo src/meshdemo.cpp ${SOURCES} ${SHADERS})
 target_link_libraries(mesh-demo ${CORE})
 
+add_executable(test src/test.cpp ${SOURCES})
+target_link_libraries(test ${CORE})
