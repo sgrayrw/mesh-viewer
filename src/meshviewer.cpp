@@ -212,11 +212,6 @@ static GLuint LoadShader(const std::string &vertex, const std::string &fragment)
 
 
 int main(int argc, char **argv) {
-    if (argc < 2) {
-        cout << "Usage: " + string(argv[0]) + " [shader name (e.g. phong)]" << endl;
-        return -1;
-    }
-
     GLFWwindow *window;
 
     if (!glfwInit()) {
@@ -275,7 +270,7 @@ int main(int argc, char **argv) {
     LoadModels("../models/");
     LoadModel(0);
 
-    GLuint shaderId = LoadShader("../shaders/" + string(argv[1]) + ".vs", "../shaders/" + string(argv[1]) + ".fs");
+    GLuint shaderId = LoadShader("../shaders/phong.vs", "../shaders/phong.fs");
     glUseProgram(shaderId);
 
     // mvp
