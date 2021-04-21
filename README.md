@@ -5,7 +5,7 @@ OPenGL applications for viewing meshes
 ## Screenshots
 Phong shading vs Per-pixel phong shading
 
-<img src="images/demo.png" alt="demo" width="500"/>
+<img src="images/demo.png" alt="demo" width="800"/>
 
 ## How to build
 
