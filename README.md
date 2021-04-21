@@ -2,6 +2,10 @@
 
 OPenGL applications for viewing meshes
 
+## Screenshots
+Phong shading vs Per-pixel phong shading
+<img src="images/demo.png" alt="demo" width="350"/>
+
 ## How to build
 
 *Windows*
@@ -38,6 +42,3 @@ To run each program from build, you would type
 ```
 mesh-viewer/build $ ../bin/mesh-viewer
 ```
-
-# TODO: Screenshots and writeup
-
