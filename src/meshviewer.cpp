@@ -51,7 +51,7 @@ static void LoadModel(int modelId) {
     float y_dist = max_bounds.y - min_bounds.y;
     float z_dist = max_bounds.z - min_bounds.z;
     float max_dist = glm::max(x_dist, glm::max(y_dist, z_dist));
-    float ratio = 2.2f / max_dist;
+    float ratio = 2.5f / max_dist;
     mat4 scale_mat = glm::scale(mat4(1.0f), vec3(ratio, ratio, ratio));
     // translate
     vec3 center = (max_bounds + min_bounds) * 0.5f;
@@ -274,8 +274,18 @@ int main(int argc, char **argv) {
     glUseProgram(shaderId);
 
     // mvp
-    GLuint mvpParam = glGetUniformLocation(shaderId, "mvp");
+    GLuint mvpId = glGetUniformLocation(shaderId, "uMVP");
     glm::mat4 projection = glm::perspective(glm::radians(60.0), 1.0, 0.1, 10.0);
+
+    // other vars for shader
+    GLuint mvId = glGetUniformLocation(shaderId, "uMV");
+    GLuint nmvId = glGetUniformLocation(shaderId, "uNMV");
+    glUniform3f(glGetUniformLocation(shaderId, "uMaterial.Ks"), 1.0, 1.0, 1.0);
+    glUniform3f(glGetUniformLocation(shaderId, "uMaterial.Kd"), 0.4, 0.6, 1.0);
+    glUniform3f(glGetUniformLocation(shaderId, "uMaterial.Ka"), 0.1, 0.1, 0.1);
+    glUniform1f(glGetUniformLocation(shaderId, "uMaterial.shininess"), 80.0);
+    glUniform3f(glGetUniformLocation(shaderId, "uLight.position"), 100.0, 100.0, 100.0);
+    glUniform3f(glGetUniformLocation(shaderId, "uLight.color"), 1.0, 1.0, 1.0);
 
     // Loop until the user closes the window
     while (!glfwWindowShouldClose(window)) {
@@ -292,8 +302,12 @@ int main(int argc, char **argv) {
         );
 
         // update mvp
+        glm::mat4 mv = camera * transform_mat;
+        glUniformMatrix4fv(mvId, 1, GL_FALSE, &mv[0][0]);
+        glm::mat3 nmv = glm::mat3(glm::vec3(mv[0]), glm::vec3(mv[1]), glm::vec3(mv[2]));
+        glUniformMatrix3fv(nmvId, 1, GL_FALSE, &nmv[0][0]);
         glm::mat4 mvp = projection * camera * transform_mat;
-        glUniformMatrix4fv(mvpParam, 1, GL_FALSE, &mvp[0][0]);
+        glUniformMatrix4fv(mvpId, 1, GL_FALSE, &mvp[0][0]);
 
         // Draw primitive
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, theElementbuffer);
@@ -309,5 +323,3 @@ int main(int argc, char **argv) {
     glfwTerminate();
     return 0;
 }
-
-
